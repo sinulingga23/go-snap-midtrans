@@ -22,12 +22,12 @@ func NewSnapService() snapService {
 
 	snapService := snapService{}
 
-	if os.Getenv("ENV_PRODUCTION") != "" {
+	if os.Getenv("ENV") == "production" {
 		snapService.serverKey = os.Getenv("API_SERVER_KEY_MIDTRANS_PRODUCTION")
 		snapService.host = os.Getenv("HOST_MIDTRANS_PRODUCTION")
 	}
 
-	if os.Getenv("ENV_DEVELOPMENT") != "" {
+	if os.Getenv("ENV") == "development" {
 		snapService.serverKey = os.Getenv("API_SERVER_KEY_MIDTRANS_SANDBOX")
 		snapService.host = os.Getenv("HOST_MIDTRANS_SANDBOX")
 	}
@@ -79,7 +79,7 @@ func (s *snapService) AcquireToken(requestAcquireToken payload.AcquireTokenSnapR
 
 	bytesResponse, errReadAll := io.ReadAll(response.Body)
 	if errReadAll != nil {
-		log.Printf("")
+		log.Printf("%s: errReadAll: %v", serviceName, errReadAll)
 		return payload.AcquireTokenSnapResponse{}, errReadAll
 	}
 
@@ -95,10 +95,10 @@ func (s *snapService) AcquireToken(requestAcquireToken payload.AcquireTokenSnapR
 	}
 
 	if response.StatusCode == constants.RC_FAILED_CREATE_SNAP_TOKEN {
-		log.Printf("%s: Failed Create Snap Token: %v, StatusCode: %v", serviceName, string(bytesMarshal), response.StatusCode)
+		log.Printf("%s: Failed Create Snap Token: %v, StatusCode: %v", serviceName, string(bytesResponse), response.StatusCode)
 		return payload.AcquireTokenSnapResponse{}, errors.New(constants.RD_FAILED_CREATE_SNAP_TOKEN)
 	}
 
-	log.Printf("%s: Error Create Snap Token: %v, StatusCode: %v", serviceName, string(bytesMarshal), response.StatusCode)
+	log.Printf("%s: Error Create Snap Token: %v, StatusCode: %v", serviceName, string(bytesResponse), response.StatusCode)
 	return payload.AcquireTokenSnapResponse{}, errors.New(constants.RD_ERROR_CREATE_SNAP_TOKEN)
 }

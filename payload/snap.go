@@ -12,7 +12,7 @@ type (
 	}
 
 	TransactionDetailsSnap struct {
-		OrderId     string `json:"orderId"`
+		OrderId     string `json:"order_id"`
 		GrossAmount int    `json:"gross_amount"`
 	}
 
