@@ -1,0 +1,11 @@
+package constants
+
+const (
+	RC_SUCCESS_CREATE_SNAP_TOKEN = 201
+	RC_FAILED_CREATE_SNAP_TOKEN  = 401
+)
+
+const (
+	RD_FAILED_CREATE_SNAP_TOKEN = "Failed"
+	RD_ERROR_CREATE_SNAP_TOKEN  = "Error"
+)
